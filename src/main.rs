@@ -65,19 +65,15 @@ async fn main() -> anyhow::Result<()> {
         return Err(anyhow::anyhow!("Проверка подключения к Redis не удалась"));
     }
 
-    // Создаем состояние приложения
     let app_state = AppState {
         config: config.clone(),
         redis: redis_service,
     };
 
-    // Создаем адрес для сервера
     let addr = SocketAddr::from(([0, 0, 0, 0], config.server.port));
 
-    // Создаем маршруты приложения
     let app = create_app(app_state);
 
-    // Запускаем сервер
     info!("Запуск сервера на {}", addr);
     let listener = tokio::net::TcpListener::bind(addr).await?;
 
